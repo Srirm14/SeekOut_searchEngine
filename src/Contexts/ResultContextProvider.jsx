@@ -1,9 +1,10 @@
+// ResultContext.js
+
 import React, { createContext, useContext, useState } from "react";
 import axios from "axios";
 
-const ResultContext = createContext();
 
-// const baseUrl = "https://google-search-json.p.rapidapi.com";
+const ResultContext = createContext();
 
 export const ResultContextProvider = ({ children }) => {
   const [results, setResults] = useState([]);
@@ -13,30 +14,25 @@ export const ResultContextProvider = ({ children }) => {
   const [newsResults, setNewsResults] = useState([]);
   const [videosResult, setVideosResult] = useState([]);
 
+  const rapidAPIKey = import.meta.env.VITE_RAPIDAPI_KEY;
+  const rapidAPIHost = import.meta.env.VITE_RAPIDAPI_HOST;
+
   const getResults = async (searchKey) => {
-    console.log(searchKey);
     setLoading(true);
 
     const options = {
-        method: 'GET',
-        url: 'https://google-search74.p.rapidapi.com/',
-        params: {
-          query:`${searchKey}`,
-          limit: '10',
-          related_keywords: 'true'
-        },
-        headers: {
-          'X-RapidAPI-Key': 'e7233e6a18msh7b7e9969d909cf6p197c06jsnd14523924e6b',
-          'X-RapidAPI-Host': 'google-search74.p.rapidapi.com'
-        }
-      };
-      
-      try {
-          const response = await axios.request(options);
-          console.log(response.data);
-      } catch (error) {
-          console.error(error);
+      method: 'GET',
+      url: 'https://google-search74.p.rapidapi.com/',
+      params: {
+        query: `${searchKey}`,
+        limit: '10',
+        related_keywords: 'true'
+      },
+      headers: {
+        'X-RapidAPI-Key': rapidAPIKey,
+        'X-RapidAPI-Host': rapidAPIHost
       }
+    };
 
     try {
       const response = await axios.request(options);
@@ -62,8 +58,8 @@ export const ResultContextProvider = ({ children }) => {
         start: "0",
       },
       headers: {
-        "X-RapidAPI-Key": "e7233e6a18msh7b7e9969d909cf6p197c06jsnd14523924e6b",
-        "X-RapidAPI-Host": "google-search72.p.rapidapi.com",
+        "X-RapidAPI-Key": rapidAPIKey,
+        "X-RapidAPI-Host": rapidAPIHost,
       },
     };
     try {
@@ -89,8 +85,8 @@ export const ResultContextProvider = ({ children }) => {
         lang: "en",
       },
       headers: {
-        "X-RapidAPI-Key": "e7233e6a18msh7b7e9969d909cf6p197c06jsnd14523924e6b",
-        "X-RapidAPI-Host": "real-time-news-data.p.rapidapi.com",
+        "X-RapidAPI-Key": rapidAPIKey,
+        "X-RapidAPI-Host": rapidAPIHost,
       },
     };
 
@@ -112,8 +108,8 @@ export const ResultContextProvider = ({ children }) => {
       url: "https://google-api31.p.rapidapi.com/videosearch",
       headers: {
         "content-type": "application/json",
-        "X-RapidAPI-Key": "e7233e6a18msh7b7e9969d909cf6p197c06jsnd14523924e6b",
-        "X-RapidAPI-Host": "google-api31.p.rapidapi.com",
+        "X-RapidAPI-Key": rapidAPIKey,
+        "X-RapidAPI-Host": rapidAPIHost,
       },
       data: {
         text: `${searchKey}`,
