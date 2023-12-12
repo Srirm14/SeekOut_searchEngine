@@ -1,10 +1,9 @@
-// ResultContext.js
-
 import React, { createContext, useContext, useState } from "react";
 import axios from "axios";
 
-
 const ResultContext = createContext();
+
+// const baseUrl = "https://google-search-json.p.rapidapi.com";
 
 export const ResultContextProvider = ({ children }) => {
   const [results, setResults] = useState([]);
@@ -14,25 +13,30 @@ export const ResultContextProvider = ({ children }) => {
   const [newsResults, setNewsResults] = useState([]);
   const [videosResult, setVideosResult] = useState([]);
 
-  const rapidAPIKey = import.meta.env.VITE_RAPIDAPI_KEY;
-  const rapidAPIHost = import.meta.env.VITE_RAPIDAPI_HOST;
-
   const getResults = async (searchKey) => {
+    console.log(searchKey);
     setLoading(true);
 
     const options = {
-      method: 'GET',
-      url: 'https://google-search74.p.rapidapi.com/',
-      params: {
-        query: `${searchKey}`,
-        limit: '10',
-        related_keywords: 'true'
-      },
-      headers: {
-        'X-RapidAPI-Key': rapidAPIKey,
-        'X-RapidAPI-Host': rapidAPIHost
+        method: 'GET',
+        url: 'https://api/', //use your api keys
+        params: {
+          query:`${searchKey}`,
+          limit: '10',
+          related_keywords: 'true'
+        },
+        headers: {
+          'Key': 'API_KEY',
+          'API-Host': 'API_KEY'
+        }
+      };
+      
+      try {
+          const response = await axios.request(options);
+          console.log(response.data);
+      } catch (error) {
+          console.error(error);
       }
-    };
 
     try {
       const response = await axios.request(options);
@@ -49,7 +53,7 @@ export const ResultContextProvider = ({ children }) => {
     console.log(searchKey);
     const options = {
       method: "GET",
-      url: "https://google-search72.p.rapidapi.com/imagesearch",
+      url: "https://api/imagesearch",
       params: {
         q: `${searchKey}`,
         gl: "us",
@@ -58,9 +62,9 @@ export const ResultContextProvider = ({ children }) => {
         start: "0",
       },
       headers: {
-        "X-RapidAPI-Key": rapidAPIKey,
-        "X-RapidAPI-Host": rapidAPIHost,
-      },
+        'Key': 'API_KEY',
+        'API-Host': 'API_KEY'
+      }
     };
     try {
       const imageResponse = await axios.request(options);
@@ -78,16 +82,16 @@ export const ResultContextProvider = ({ children }) => {
 
     const options = {
       method: "GET",
-      url: "https://real-time-news-data.p.rapidapi.com/search",
+      url: "https://api/search",
       params: {
         query: `${searchKey}`,
         country: "US",
         lang: "en",
       },
       headers: {
-        "X-RapidAPI-Key": rapidAPIKey,
-        "X-RapidAPI-Host": rapidAPIHost,
-      },
+        'Key': 'API_KEY',
+        'API-Host': 'API_KEY'
+      }
     };
 
     try {
@@ -105,11 +109,10 @@ export const ResultContextProvider = ({ children }) => {
 
     const options = {
       method: "POST",
-      url: "https://google-api31.p.rapidapi.com/videosearch",
+      url: "https://api/videosearch",
       headers: {
-        "content-type": "application/json",
-        "X-RapidAPI-Key": rapidAPIKey,
-        "X-RapidAPI-Host": rapidAPIHost,
+        'Key': 'API_KEY',
+        'API-Host': 'API_KEY'
       },
       data: {
         text: `${searchKey}`,
